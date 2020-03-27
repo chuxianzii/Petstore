@@ -1,0 +1,189 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>js购物车数量价格变化-jq22.com</title>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+<style>
+   h1 {
+	text-align:center;
+}
+table {
+	margin:0 auto;
+	width:60%;
+	border:2px solid #aaa;
+	border-collapse:collapse;
+}
+table th,table td {
+	border:2px solid #aaa;
+	padding:5px;
+}
+th {
+	background-color:#eee;
+}
+</style>
+</head>
+<body>
+<h1>很想买</h1>
+
+<table>
+    <tbody><tr>
+        <th>商品</th>
+        <th>单价(元)</th>
+        <th>颜色</th>
+        <th>库存</th>
+        <th>好评率</th>
+        <th>操作</th>
+    </tr>
+    <tr>
+        <td>冰箱</td>
+        <td>80</td>
+        <td>黑色</td>
+        <td>893</td>
+        <td>98%</td>
+        <td align="center">
+            <input value="加入购物车" onclick="f1(this);" type="button">
+        </td>
+    </tr>
+    <tr>
+        <td>洗衣机</td>
+        <td>150</td>
+        <td>黑色</td>
+        <td>9028</td>
+        <td>96%</td>
+        <td align="center">
+            <input value="加入购物车" onclick="f1(this);" type="button">
+        </td>
+    </tr>
+    <tr>
+        <td>空调</td>
+        <td>60</td>
+        <td>透明</td>
+        <td>672</td>
+        <td>99%</td>
+        <td align="center">
+            <input value="加入购物车" onclick="f1(this);" type="button">
+        </td>
+    </tr>
+    <tr>
+        <td>手机</td>
+        <td>100</td>
+        <td>蓝色</td>
+        <td>8937</td>
+        <td>95%</td>
+        <td align="center">
+            <input value="加入购物车" onclick="f1(this);" type="button">
+        </td>
+    </tr>
+    <tr>
+        <td>电视</td>
+        <td>70</td>
+        <td>红色</td>
+        <td>482</td>
+        <td>100%</td>
+        <td align="center">
+            <input value="加入购物车" onclick="f1(this);" type="button">
+        </td>
+    </tr>
+</tbody></table>
+
+<h1>购物车</h1>
+<table>
+    <thead>
+        <tr>
+            <th>商品</th>
+            <th>单价(元)</th>
+            <th>数量</th>
+            <th>金额(元)</th>
+            <th>删除</th>
+        </tr>
+    </thead>
+    <tbody id="goods">
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" align="right">总计</td>
+            <td id="total"></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+
+<script>
+  function f1(btn) {
+      var tr = btn.parentNode.parentNode;
+      var name = tr.firstElementChild.innerHTML;
+      var price = tr.firstElementChild.nextElementSibling.innerHTML;
+      var tbody = document.getElementById("goods");
+      var tr1 = tbody.getElementsByTagName("tr");
+      if (tr1.length) {
+          for (var k = 0; k < tr1.length; k++) {
+              var name1 = tr1[k].getElementsByTagName("td")[0].innerHTML;
+              if (name == name1) {
+                  var nu = tr1[k].getElementsByTagName("td")[2];
+                  var shuliang = nu.getElementsByTagName("input")[1];
+                  shuliang.value++;
+                  var daj = tr1[k].getElementsByTagName('td')[1];
+                  var jiage = tr1[k].getElementsByTagName('td')[3];
+                  jiage.innerHTML = daj.innerHTML * shuliang.value;
+                  sum();
+                  return;
+              }
+          }
+          var trs = document.createElement("tr");
+          trs.innerHTML = '<td>' + name + '</td><td>' + price + '</td><td><input type="button" value="-" onclick="jian(this)"/><input type="text" value="1"/><input type="button" value="+" onclick="jia(this)"/>' + '</td><td>' + price + '</td><td><input type="button" value="删除" onclick="remove(this)"/></td>';
+          tbody.appendChild(trs);
+          sum();
+      } else {
+          var trs = document.createElement("tr");
+          trs.innerHTML = '<td>' + name + '</td><td>' + price + '</td><td><input type="button" value="-" onclick="jian(this)"/><input type="text" value="1"/><input type="button" value="+" onclick="jia(this)"/>' + '</td><td>' + price + '</td><td><input type="button" value="删除" onclick="remove(this)"/></td>';
+          tbody.appendChild(trs);
+          sum();
+      }
+
+  }
+
+  function jia(btn) {
+      var jia = btn.previousElementSibling;
+      var tex = btn.parentNode.nextElementSibling;
+      var danjia = btn.parentNode.parentNode.getElementsByTagName("td")[1].innerHTML;
+      jia.value++;
+      tex.innerHTML = danjia * jia.value;
+      sum();
+  }
+
+  function jian(btn) {
+      var jian = btn.nextElementSibling;
+      var tex = btn.parentNode.nextElementSibling;
+      var danjia = btn.parentNode.parentNode.getElementsByTagName("td")[1].innerHTML;
+      if (jian.value > 1) {
+          jian.value--;
+      } else {
+          jian.value = 1;
+      }
+      tex.innerHTML = danjia * jian.value;
+      sum();
+  }
+
+  function remove(btn) {
+      var tbody = document.getElementById("goods");
+      var tr = btn.parentNode.parentNode;
+      tbody.removeChild(tr);
+      sum();
+  }
+
+  function sum() {
+      var s = 0;
+      var tbody = document.getElementById("goods");
+      var jq = tbody.getElementsByTagName("tr");
+      for (var i = 0; i < jq.length; i++) {
+          var q = jq[i].getElementsByTagName("td")[3];
+          s += parseFloat(q.innerHTML);
+      }
+      var total = document.getElementById("total");
+      total.innerHTML = s;
+  }
+</script>
+
+</body>
+</html>

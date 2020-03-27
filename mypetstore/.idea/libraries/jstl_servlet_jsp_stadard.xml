@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="jstl-servlet-jsp-stadard">
+    <CLASSES>
+      <root url="jar://D:/apache-tomcat-8.5.45/lib/jsp-api.jar!/" />
+      <root url="jar://D:/apache-tomcat-8.5.45/lib/standard-1.0.jar!/" />
+      <root url="jar://D:/apache-tomcat-8.5.45/lib/servlet-api.jar!/" />
+      <root url="file://D:/apache-tomcat-8.5.45/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://D:/apache-tomcat-8.5.45/lib" recursive="false" />
+  </library>
+</component>
